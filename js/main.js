@@ -3,8 +3,10 @@
 const openModal = () => document.getElementById('modal')
     .classList.add('active')
 
-const closeModal = () => document.getElementById('modal')
-    .classList.remove('active')
+const closeModal = () => {
+    clearFilds();
+    document.getElementById('modal').classList.remove('active');
+}
 
 const tempClient = {
     nome:"graca",
@@ -58,20 +60,23 @@ const isValidFields = () => {
     return  document.querySelector('#form').reportValidity()
 }
 
-
-
 //interação com o layout
+
+const clearFilds = () => {
+    const filds = document.querySelectorAll('.modal-field');
+    filds.forEach(filds => filds.value = "");
+}
 
 const saveCliente = () => {
     if (isValidFields()){
         const client = {
-            nome:document.getElementById('nome').nodeValue,
-            email:document.getElementById('email').nodeValue,
-            celular:document.getElementById('celular').nodeValue,
-            cidade:document.getElementById('cidade').nodeValue
-
+            nome:document.getElementById('name').value,
+            email:document.getElementById('email').value,
+            celular:document.getElementById('tel').value,
+            cidade:document.getElementById('city').value,
         };
         createClient(client);   
+        closeModal();
     }
 }
 
