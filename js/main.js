@@ -80,6 +80,31 @@ const saveCliente = () => {
     }
 }
 
+//criar linha de usuario
+const createRow = (client) => {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+    <td>${client.nome}</td>
+    <td>${client.email}</td>
+    <td>${client.celular}</td>
+    <td>${client.cidade}</td>
+    <td>
+        <button type="button" class="button green">editar</button>
+        <button type="button" class="button red">excluir</button>
+    </td>
+    `
+
+    document.querySelector('#tbClient>tbody').append(newRow);
+}
+
+//atualiza a tabela
+const updateTable = () => {
+    const dbClient = readClient();
+    dbClient.forEach(createRow)
+}
+
+updateTable();
+
 //eventos
 document.getElementById('cadastrarCliente')
     .addEventListener('click', openModal);
