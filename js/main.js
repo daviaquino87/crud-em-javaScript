@@ -97,9 +97,16 @@ const createRow = (client) => {
     document.querySelector('#tbClient>tbody').append(newRow);
 }
 
+const clearTable = () => {
+    const rows = document.querySelectorAll('#tbClient>tbody tr');
+    rows.forEach(row => row.parentNode.removeChild(row))
+}
+
+
 //atualiza a tabela
 const updateTable = () => {
     const dbClient = readClient();
+    clearTable();
     dbClient.forEach(createRow)
 }
 
