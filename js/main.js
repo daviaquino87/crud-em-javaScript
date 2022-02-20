@@ -7,8 +7,8 @@ const closeModal = () => document.getElementById('modal')
     .classList.remove('active')
 
 const tempClient = {
-    nome:"roberto",
-    email:"roberto@gmail.com",
+    nome:"graca",
+    email:"graca@gmail.com",
     celular:"88998421205",
     cidade:"pereiro"
 }
@@ -54,10 +54,33 @@ const createClient = (client) => {
 }
 ////////////////////////////////////////////////////////////////////
 
+const isValidFields = () => {
+    return  document.querySelector('#form').reportValidity()
+}
+
+
+
+//interação com o layout
+
+const saveCliente = () => {
+    if (isValidFields()){
+        const client = {
+            nome:document.getElementById('nome').nodeValue,
+            email:document.getElementById('email').nodeValue,
+            celular:document.getElementById('celular').nodeValue,
+            cidade:document.getElementById('cidade').nodeValue
+
+        };
+        createClient(client);   
+    }
+}
 
 //eventos
 document.getElementById('cadastrarCliente')
-    .addEventListener('click', openModal)
+    .addEventListener('click', openModal);
 
 document.getElementById('modalClose')
-    .addEventListener('click', closeModal)
+    .addEventListener('click', closeModal);
+
+document.querySelector('#salvar')
+    .addEventListener('click',saveCliente);
