@@ -75,13 +75,22 @@ const saveCliente = () => {
             celular:document.getElementById('tel').value,
             cidade:document.getElementById('city').value,
         };
-        createClient(client);   
-        closeModal();
+        const index = document.getElementById('name').dataset.index;
+        if(index == 'new'){
+            createClient(client);   
+            updateTable();
+            closeModal();
+        }else{
+            updateClient(index, client);
+            updateTable();
+            closeModal();
+        }
+
     }
 }
 
 //criar linha de usuario
-const createRow = (client) => {
+const createRow = (client, index) => {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
     <td>${client.nome}</td>
@@ -89,17 +98,17 @@ const createRow = (client) => {
     <td>${client.celular}</td>
     <td>${client.cidade}</td>
     <td>
-        <button type="button" class="button green">editar</button>
-        <button type="button" class="button red">excluir</button>
+        <button type="button" class="button green" id="edit-${index}">Editar</button>
+        <button type="button" class="button red" id="delete-${index}">Excluir</button>
     </td>
     `
-
+    console.log(index)
     document.querySelector('#tbClient>tbody').append(newRow);
 }
 
 const clearTable = () => {
     const rows = document.querySelectorAll('#tbClient>tbody tr');
-    rows.forEach(row => row.parentNode.removeChild(row))
+    rows.forEach(row => row.parentNode.removeChild(row));
 }
 
 
@@ -107,7 +116,36 @@ const clearTable = () => {
 const updateTable = () => {
     const dbClient = readClient();
     clearTable();
-    dbClient.forEach(createRow)
+    dbClient.forEach(createRow);
+}
+
+const fillFields = (client) => {
+    document.getElementById('name').value = client.nome;
+    document.getElementById('email').value = client.email;
+    document.getElementById('tel').value = client.celular;
+    document.getElementById('city').value = client.cidade;
+    document.getElementById('name').dataset.index = client.index;
+}
+
+//editar usuario
+const editClient = (index) => {
+    const client = readClient()[index];
+    client.index = index;
+    fillFields(client);
+    openModal();
+}
+
+
+const editDelete = (event) => {
+    if(event.target.type == 'button'){
+        const [action,index] = event.target.id.split('-');
+
+        if(action == 'edit'){
+            editClient(index);
+        }else(
+            console.log("deletando clinte")
+        )
+    }
 }
 
 updateTable();
@@ -121,3 +159,6 @@ document.getElementById('modalClose')
 
 document.querySelector('#salvar')
     .addEventListener('click',saveCliente);
+
+document.querySelector('#tbClient>tbody')
+    .addEventListener('click', editDelete);
